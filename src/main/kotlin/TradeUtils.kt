@@ -4,6 +4,11 @@ import kotlin.math.absoluteValue
 var count = 0
 var yearCount = 0
 
+const val fairDealCoins = 4
+const val unfairDealCoins = 2
+const val victimDealCoins = 1
+const val stealDealCoins = 5
+
 fun makeDeals(traderOne: Trader, traderTwo: Trader) {
     val numberOfDeals = Random().nextInt(6) + 5
     println("Торговец ${traderOne.id} и Торговец ${traderTwo.id} провели $numberOfDeals сделок.")
@@ -13,23 +18,23 @@ fun makeDeals(traderOne: Trader, traderTwo: Trader) {
         when {
             decision1 == decision2 -> {
                 if (decision1) {
-                    traderOne.madeFairDeal()
-                    traderTwo.madeFairDeal()
+                    traderOne.makeDeal(fairDealCoins)
+                    traderTwo.makeDeal(fairDealCoins)
                     println("Торговец ${traderOne.id} и Торговец ${traderTwo.id} совершили честную сделку, каждый получает по 4 монеты.")
                 } else {
-                    traderOne.madeUnfairDeal()
-                    traderTwo.madeUnfairDeal()
+                    traderOne.makeDeal(unfairDealCoins)
+                    traderTwo.makeDeal(unfairDealCoins)
                     println("Торговец ${traderOne.id} и Торговец ${traderTwo.id} совершили нечестную сделку, каждый получает по 2 монеты.")
                 }
             }
             decision1 != decision2 -> {
                 if (decision1) {
-                    traderOne.becameVictimOfFraud()
-                    traderTwo.madeSuccessfulFraud()
+                    traderOne.makeDeal(victimDealCoins)
+                    traderTwo.makeDeal(stealDealCoins)
                     println("Торговец ${traderOne.id} был обманут и получает 1 монету, Торговец ${traderTwo.id} успешно сжульничал и получает 5 монет.")
                 } else {
-                    traderOne.madeSuccessfulFraud()
-                    traderTwo.becameVictimOfFraud()
+                    traderOne.makeDeal(stealDealCoins)
+                    traderTwo.makeDeal(victimDealCoins)
                     println("Торговец ${traderTwo.id} был обманут и получает 1 монету, Торговец ${traderOne.id} успешно сжульничал и получает 5 монет.")
                 }
             }

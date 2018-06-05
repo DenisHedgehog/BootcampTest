@@ -7,23 +7,8 @@ abstract class Trader(val id: Int) {
 
     protected fun makeWrongDecision(deal: Boolean): Boolean = if (Random().nextInt(100) > 94) !deal else deal
 
-    open fun madeFairDeal() {
-        earnings += 4
-        steps++
-    }
-
-    open fun madeUnfairDeal() {
-        earnings += 2
-        steps++
-    }
-
-    open fun madeSuccessfulFraud() {
-        earnings += 5
-        steps++
-    }
-
-    open fun becameVictimOfFraud() {
-        earnings += 1
+    open fun makeDeal(coins: Int) {
+        earnings += coins
         steps++
     }
 

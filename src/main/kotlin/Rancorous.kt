@@ -4,14 +4,10 @@ class Rancorous(id: Int) : Trader(id) {
 
     override fun makeDecision(): Boolean = makeWrongDecision(nextStep)
 
-    override fun becameVictimOfFraud() {
-        super.becameVictimOfFraud()
-        nextStep = false
+    override fun makeDeal(coins: Int) {
+        super.makeDeal(coins)
+        if (coins == 2 || coins == 1) {
+            nextStep = false
+        }
     }
-
-    override fun madeUnfairDeal() {
-        super.madeUnfairDeal()
-        nextStep = false
-    }
-
 }

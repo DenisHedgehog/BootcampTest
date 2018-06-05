@@ -4,24 +4,14 @@ class Cunning(id: Int) : Trader(id) {
 
     override fun makeDecision(): Boolean = makeWrongDecision(nextStep)
 
-    override fun madeFairDeal() {
-        super.madeFairDeal()
-        nextStep = true
-    }
-
-    override fun madeUnfairDeal() {
-        super.madeUnfairDeal()
-        nextStep = false
-    }
-
-    override fun madeSuccessfulFraud() {
-        super.madeSuccessfulFraud()
-        nextStep = true
-    }
-
-    override fun becameVictimOfFraud() {
-        super.becameVictimOfFraud()
-        nextStep = false
+    override fun makeDeal(coins: Int) {
+        super.makeDeal(coins)
+        when (coins) {
+            4 -> nextStep = true
+            2 -> nextStep = false
+            5 -> nextStep = true
+            1 -> nextStep = false
+        }
     }
 
 }

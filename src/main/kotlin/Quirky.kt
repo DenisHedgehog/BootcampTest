@@ -19,30 +19,33 @@ class Quirky(id: Int) : Trader(id) {
         }
     }
 
-    override fun madeFairDeal() {
-        super.madeFairDeal()
-        nextStep = true
-    }
-
-    override fun madeUnfairDeal() {
-        super.madeUnfairDeal()
-        if (steps == 1) {
+    override fun makeDeal(coins: Int) {
+        super.makeDeal(coins)
+        if (steps < 4 && (coins == 2 || coins == 1)) {
             isVictim = true
         }
-        nextStep = false
-    }
+        if (!isVictim && steps >= 4) {
+            when (coins) {
+                4 -> nextStep = true
 
-    override fun madeSuccessfulFraud() {
-        super.madeSuccessfulFraud()
-        nextStep = true
-    }
+                2 -> {
+                    if (steps < 4) {
+                        isVictim = true
+                    }
+                    nextStep = false
+                }
 
-    override fun becameVictimOfFraud() {
-        super.becameVictimOfFraud()
-        if (steps < 4) {
-            isVictim = true
+                5 -> nextStep = true
+
+                1 -> {
+                    if (steps < 4) {
+                        isVictim = true
+                    }
+                    nextStep = false
+
+                }
+            }
         }
-        nextStep = false
     }
 
 }
