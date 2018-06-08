@@ -26,23 +26,13 @@ class Quirky(id: Int) : Trader(id) {
         }
         if (!isVictim && steps >= 4) {
             when (coins) {
-                4 -> nextStep = true
+                4, 5 -> nextStep = true
 
-                2 -> {
+                1, 2 -> {
                     if (steps < 4) {
                         isVictim = true
                     }
                     nextStep = false
-                }
-
-                5 -> nextStep = true
-
-                1 -> {
-                    if (steps < 4) {
-                        isVictim = true
-                    }
-                    nextStep = false
-
                 }
             }
         }

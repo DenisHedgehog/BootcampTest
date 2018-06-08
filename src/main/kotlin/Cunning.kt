@@ -7,10 +7,8 @@ class Cunning(id: Int) : Trader(id) {
     override fun makeDeal(coins: Int) {
         super.makeDeal(coins)
         when (coins) {
-            4 -> nextStep = true
-            2 -> nextStep = false
-            5 -> nextStep = true
-            1 -> nextStep = false
+            4, 5 -> nextStep = true
+            1, 2 -> nextStep = false
         }
     }
 

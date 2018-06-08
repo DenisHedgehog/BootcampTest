@@ -1,4 +1,3 @@
-import java.util.*
 import kotlin.math.absoluteValue
 
 var count = 0
@@ -10,33 +9,35 @@ const val victimDealCoins = 1
 const val stealDealCoins = 5
 
 fun makeDeals(traderOne: Trader, traderTwo: Trader) {
-    val numberOfDeals = Random().nextInt(6) + 5
+    val numberOfDeals = java.util.Random().nextInt(6) + 5
     println("Торговец ${traderOne.id} и Торговец ${traderTwo.id} провели $numberOfDeals сделок.")
     for (i in 1..numberOfDeals) {
         val decision1 = traderOne.makeDecision()
         val decision2 = traderTwo.makeDecision()
         when {
-            decision1 == decision2 -> {
-                if (decision1) {
-                    traderOne.makeDeal(fairDealCoins)
-                    traderTwo.makeDeal(fairDealCoins)
-                    println("Торговец ${traderOne.id} и Торговец ${traderTwo.id} совершили честную сделку, каждый получает по 4 монеты.")
-                } else {
-                    traderOne.makeDeal(unfairDealCoins)
-                    traderTwo.makeDeal(unfairDealCoins)
-                    println("Торговец ${traderOne.id} и Торговец ${traderTwo.id} совершили нечестную сделку, каждый получает по 2 монеты.")
-                }
+            decision1 && decision2 -> {
+                traderOne.makeDeal(fairDealCoins)
+                traderTwo.makeDeal(fairDealCoins)
+                println("Торговец ${traderOne.id} и Торговец ${traderTwo.id} совершили честную сделку, " +
+                        "каждый получает по $fairDealCoins монеты.")
             }
-            decision1 != decision2 -> {
-                if (decision1) {
-                    traderOne.makeDeal(victimDealCoins)
-                    traderTwo.makeDeal(stealDealCoins)
-                    println("Торговец ${traderOne.id} был обманут и получает 1 монету, Торговец ${traderTwo.id} успешно сжульничал и получает 5 монет.")
-                } else {
-                    traderOne.makeDeal(stealDealCoins)
-                    traderTwo.makeDeal(victimDealCoins)
-                    println("Торговец ${traderTwo.id} был обманут и получает 1 монету, Торговец ${traderOne.id} успешно сжульничал и получает 5 монет.")
-                }
+            !decision1 && !decision2 -> {
+                traderOne.makeDeal(unfairDealCoins)
+                traderTwo.makeDeal(unfairDealCoins)
+                println("Торговец ${traderOne.id} и Торговец ${traderTwo.id} совершили нечестную сделку, " +
+                        "каждый получает по $unfairDealCoins монеты.")
+            }
+            decision1 && !decision2 -> {
+                traderOne.makeDeal(victimDealCoins)
+                traderTwo.makeDeal(stealDealCoins)
+                println("Торговец ${traderOne.id} был обманут и получает $victimDealCoins монету, " +
+                        "Торговец ${traderTwo.id} успешно сжульничал и получает $stealDealCoins монет.")
+            }
+            !decision1 && decision2 -> {
+                traderOne.makeDeal(stealDealCoins)
+                traderTwo.makeDeal(victimDealCoins)
+                println("Торговец ${traderTwo.id} был обманут и получает $victimDealCoins монету, " +
+                        "Торговец ${traderOne.id} успешно сжульничал и получает $stealDealCoins монет.")
             }
         }
         count++
@@ -51,20 +52,21 @@ fun fillGuild(traders: MutableList<Trader>) {
         traders.add(Unpredictable(i + 30))
         traders.add(Rancorous(i + 40))
         traders.add(Quirky(i + 50))
+        traders.add(Tactical(i + 60))
     }
 }
 
 fun kickLosersAndGetNewTraders(traders: MutableList<Trader>) {
     val maxId = traders.maxBy { it.id }!!.id
-
+    val unsuccessfulTradersCount = (traders.size * 0.2).toInt()
     var trader: Trader
-    for (i in 1..12) {
+    for (i in 1..unsuccessfulTradersCount) {
         trader = traders.last()
         println("Торговец ${trader.id} ($trader) с позором изгнан из гильдии.")
         traders.remove(trader)
     }
 
-    for (i in 1..12) {
+    for (i in 1..unsuccessfulTradersCount) {
         when (traders[i - 1]) {
             is Altruist -> addNewTrader(Altruist(maxId + i), traders)
             is Swindler -> addNewTrader(Swindler(maxId + i), traders)
@@ -72,6 +74,7 @@ fun kickLosersAndGetNewTraders(traders: MutableList<Trader>) {
             is Unpredictable -> addNewTrader(Unpredictable(maxId + i), traders)
             is Rancorous -> addNewTrader(Rancorous(maxId + i), traders)
             is Quirky -> addNewTrader(Quirky(maxId + i), traders)
+            is Tactical -> addNewTrader(Tactical(maxId + i), traders)
         }
     }
 }
@@ -81,7 +84,6 @@ fun makeYearOfDeals(traders: MutableList<Trader>) {
         if (i != traders.size - 1) {
             for (j in i + 1 until traders.size) {
                 makeDeals(traderOne, traders[j])
-
             }
         }
     }
@@ -118,6 +120,6 @@ fun getStatistic(traders: MutableList<Trader>) {
     }
 
     val tradersSize = traders.size
-
-    tradersCounts.toList().sortedByDescending { it.second }.map { println("Торговцев типа ${it.first} в гильдии ${it.second} из ${traders.size} (${it.second.toFloat()/tradersSize.toFloat()*100}%)") }
+    tradersCounts.toList().sortedByDescending { it.second }.map { println("Торговцев типа ${it.first} в гильдии " +
+            "${it.second} из ${traders.size} (${it.second.toFloat()/tradersSize.toFloat()*100}%)") }
 }

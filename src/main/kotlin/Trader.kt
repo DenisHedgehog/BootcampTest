@@ -1,11 +1,9 @@
-import java.util.*
-
 abstract class Trader(val id: Int) {
 
     var steps = 0
     var earnings = 0
 
-    protected fun makeWrongDecision(deal: Boolean): Boolean = if (Random().nextInt(100) > 94) !deal else deal
+    protected fun makeWrongDecision(deal: Boolean): Boolean = if (java.util.Random().nextInt(100) > 94) !deal else deal
 
     open fun makeDeal(coins: Int) {
         earnings += coins
@@ -20,6 +18,7 @@ abstract class Trader(val id: Int) {
                 is Unpredictable -> "непредсказуемый"
                 is Rancorous -> "злопамятный"
                 is Quirky -> "ушлый"
+                is Tactical -> "тактичный"
                 else -> "торговец"
             }
 
