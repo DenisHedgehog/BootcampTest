@@ -3,11 +3,13 @@ import kotlin.math.absoluteValue
 var count = 0
 var yearCount = 0
 
+// Константы, хранящие количество монет для каждого исхода сделки
 const val fairDealCoins = 4
 const val unfairDealCoins = 2
 const val victimDealCoins = 1
 const val stealDealCoins = 5
 
+// Функция, которая проводит от 5 до 10 сделок между двумя торговцами
 fun makeDeals(traderOne: Trader, traderTwo: Trader) {
     val numberOfDeals = java.util.Random().nextInt(6) + 5
     println("Торговец ${traderOne.id} и Торговец ${traderTwo.id} провели $numberOfDeals сделок.")
@@ -44,6 +46,7 @@ fun makeDeals(traderOne: Trader, traderTwo: Trader) {
     }
 }
 
+// Функция, с помощью которой в первый раз заполняется гильдия
 fun fillGuild(traders: MutableList<Trader>) {
     for (i in 1..10) {
         traders.add(Altruist(i))
@@ -56,6 +59,7 @@ fun fillGuild(traders: MutableList<Trader>) {
     }
 }
 
+// Функция для изгнания неуспешных торговцев и привлечения новых
 fun kickLosersAndGetNewTraders(traders: MutableList<Trader>) {
     val maxId = traders.maxBy { it.id }!!.id
     val unsuccessfulTradersCount = (traders.size * 0.2).toInt()
@@ -79,6 +83,7 @@ fun kickLosersAndGetNewTraders(traders: MutableList<Trader>) {
     }
 }
 
+// Функция, которая совершает сделки для каждой пары торговцев
 fun makeYearOfDeals(traders: MutableList<Trader>) {
     for ((i, traderOne) in traders.withIndex()) {
         if (i != traders.size - 1) {
@@ -91,6 +96,7 @@ fun makeYearOfDeals(traders: MutableList<Trader>) {
     println("Количество сделок за ${yearCount}й год равно $count.")
 }
 
+// Функция выводящая итоги года
 fun printResultsOfTheYear(traders: MutableList<Trader>) {
     traders.sortByDescending { it.earnings }
     var place = 1
@@ -103,11 +109,13 @@ fun printResultsOfTheYear(traders: MutableList<Trader>) {
     }
 }
 
+// Функция для добавления нового торговца
 fun addNewTrader(newTrader: Trader, traders: MutableList<Trader>) {
     traders.add(newTrader)
     println("Приветствуем нового члена гильдии – Торговец ${newTrader.id} ($newTrader)")
 }
 
+// Функция выводящая количество торговцев каждого типа, которые состоят в гильдии
 fun getStatistic(traders: MutableList<Trader>) {
     val tradersCounts = mutableMapOf<String, Int>()
     traders.map {
@@ -120,6 +128,6 @@ fun getStatistic(traders: MutableList<Trader>) {
     }
 
     val tradersSize = traders.size
-    tradersCounts.toList().sortedByDescending { it.second }.map { println("Торговцев типа ${it.first} в гильдии " +
-            "${it.second} из ${traders.size} (${it.second.toFloat()/tradersSize.toFloat()*100}%)") }
+    tradersCounts.toList().sortedByDescending { it.second }.map { println("Количество торговцев типа ${it.first} " +
+            "в гильдии ${it.second} из ${traders.size} (${it.second.toFloat()/tradersSize.toFloat()*100}%)") }
 }

@@ -1,3 +1,4 @@
+// Класс для торговцев типа "хитрец"
 class Cunning(id: Int) : Trader(id) {
 
     private var nextStep = true

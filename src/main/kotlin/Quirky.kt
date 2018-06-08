@@ -1,3 +1,4 @@
+// Класс для торговцев типа "ушлый"
 class Quirky(id: Int) : Trader(id) {
 
     private var nextStep = true

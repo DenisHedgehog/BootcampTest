@@ -1,3 +1,4 @@
+// Класс для торговцев типа "злопамятный"
 class Rancorous(id: Int) : Trader(id) {
 
     private var nextStep = true
